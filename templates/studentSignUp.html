@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include 'bootstrap.html' %}
+    <title>Career Guide</title>
+</head>
+  <body>
+      {% include 'nav.html' %}
+
+      <section>
+          <div class="container mt-5 pt-5">
+              <div class="row">
+                  <div class="col-12 col-sm-8 col-md-4 m-auto">
+                      <div class="card border-0 shadow">
+                          <div class="card-body">
+                              <h2 style="color: #007bff;">Welcome to Career Guide!</h2>
+                              <form action="">
+                                  <input type="text" class="form-control my-4 py-2" placeholder="First Name">
+                                  <input type="text" class="form-control my-4 py-2" placeholder="Last Name">
+                                  <input type="text" class="form-control my-4 py-2" placeholder="School Name">
+                                  <input type="email" class="form-control my-4 py-2" placeholder="School Email">
+                                  <div class="text-center">
+                                      <button class="btn btn-primary">Sign Up</button>
+                                  </div>
+                              </form>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </section>
+      <div class="footer-spacing">
+          {% include 'footer.html' %}
+      </div>
+  </body>
+</html>
