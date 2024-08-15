@@ -4,7 +4,7 @@
         {% include 'bootstrap.html' %}
     <title>Career Guide</title>
   </head>
-  <body>
+  <body> 
       {% include 'nav.html' %}
     <section>
         <div class="container mt-5 pt-5">
@@ -13,9 +13,9 @@
                     <div class="card border-0 shadow">
                         <div class="card-body">
                             <h2 style="color: #007bff;">Admin Log In</h2>
-                            <form action="">
-                                <input type="text" class="form-control my-4 py-2" placeholder="Career Center Email">
-                                <input type="text" class="form-control my-4 py-2" placeholder="Password">
+                            <form action="/adminLogin" method="post">
+                                <input type="text" class="form-control my-4 py-2" placeholder="Career Center Email" name="career_center_email">
+                                <input type="password" class="form-control my-4 py-2" placeholder="Password" name="password">
                                 <div class="text-center">
                                     <button class="btn btn-primary">Login</button>
                                 </div>

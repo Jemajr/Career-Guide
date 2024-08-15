@@ -13,16 +13,20 @@
                   <div class="col-12 col-sm-8 col-md-4 m-auto">
                       <div class="card border-0 shadow">
                           <div class="card-body">
-                              <h2 style="color: #007bff;">Welcome to Career Guide!</h2>
-                              <form action="">
-                                  <input type="text" class="form-control my-4 py-2" placeholder="First Name">
-                                  <input type="text" class="form-control my-4 py-2" placeholder="Last Name">
-                                  <input type="text" class="form-control my-4 py-2" placeholder="School Name">
-                                  <input type="email" class="form-control my-4 py-2" placeholder="School Email">
-                                  <div class="text-center">
-                                      <button class="btn btn-primary">Sign Up</button>
-                                  </div>
-                              </form>
+<h2 style="color: #007bff;">Welcome to Career Guide!</h2>
+<form action="/studentSignUp" method="post">
+    
+<input type="text" class="form-control my-4 py-2" placeholder="First Name" name="first_name">
+<input type="text" class="form-control my-4 py-2" placeholder="Last Name" name="last_name">
+<div class="form-group">  
+    {% include 'schools.html' %}
+</div> 
+<input type="email" class="form-control my-4 py-2" placeholder="School Email" name="school_email">
+<input type="password" class="form-control my-4 py-2" placeholder="Password" name="password">
+<div class="text-center">
+    <button class="btn btn-primary">Sign Up</button>
+</div>
+</form>
                           </div>
                       </div>
                   </div>
@@ -32,5 +36,6 @@
       <div class="footer-spacing">
           {% include 'footer.html' %}
       </div>
+      
   </body>
 </html>

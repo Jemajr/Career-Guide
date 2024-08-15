@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include 'bootstrap.html' %}
+    <title>Career Guide</title>
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+
+    <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="/" style="color:#007bff"><strong>Career Guide</strong> {% include 'icon.html' %}</a>
+
+
+            <div>
+                <a class="btn btn-primary" href="{{ url_for('') }}" role="button">Log Out</a>
+            </div>
+        </div>
+      </nav>
+    
+
+<section class="container d-flex justify-content-center align-items-center mt-5 pt-5" style="max-width: 800px">
+    {% include 'homeSections.html' %}
+</section>
+
+<div class="footer-spacing">
+{% include 'footer.html' %}
+</div>
+</body>
+</html>

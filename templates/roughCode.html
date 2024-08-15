@@ -1,0 +1,41 @@
+<section class="container mt-5 pt-5" style="max-width: 800px">
+    <div class="row d-flex justify-content-center align-items-center">
+        <div class="col-6">
+            {% include 'homeSections.html' %}
+
+            <div class="mb-3 mt-3">
+                <label for="formFile" class="form-label">Default file input example</label>
+                <input class="form-control" type="file" id="formFile">
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+<section class="container d-flex justify-content-center align-items-center mt-5 pt-5" style="max-width: 800px">
+    <div class="col-12">
+        {% include 'homeSections.html' %}
+    </div>
+
+    <div class="col-12 mt-4">
+        <div class="mb-3">
+          <label for="formFile" class="form-label">Default file input example</label>
+          <input class="form-control" type="file" id="formFile">
+        </div>
+    </div>
+</section>
+
+
+
+{% with messages = get_flashed_messages()  %}
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+  {{ message }}
+
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %} 

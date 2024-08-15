@@ -1,0 +1,207 @@
+ <!DOCTYPE html>
+ <html lang="en">
+ <head> 
+     {% include 'bootstrap.html' %}
+     <title>Career Guide</title>
+
+      <style>
+         body {
+           font-family: Arial, sans-serif;
+           color: #333;
+           margin: 0;
+           padding: 0;
+         }
+         .content-container {
+           max-width: 800px;
+           margin: 0 auto;
+           padding: 20px;
+         }
+         h1 {
+           color: #007bff;
+           text-align: center;
+           margin-bottom: 30px;
+         }
+         #chat-container {
+           border: 2px solid #007bff;
+           padding: 20px;
+           border-radius: 10px;
+           background-color: #ffffff;
+           box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+         }
+         #chat-messages {
+           height: 300px;
+           overflow-y: auto;
+           margin-bottom: 20px;
+           padding: 15px;
+           background-color: #f9f9f9;
+           border: 1px solid #e0e0e0;
+           border-radius: 5px;
+         }
+         #chat-messages p {
+           margin: 10px 0;
+           line-height: 1.5;
+           max-width: 70%;
+           padding: 10px;
+           border-radius: 10px;
+           clear: both;
+         }
+         #chat-messages .user-message {
+           background-color: #007bff;
+           color: #f9f9f9;
+           float: right;
+         }
+         #chat-messages .ai-message {
+           background-color: #f0f0f0;
+           color: #333;
+           float: left;
+         }
+         #user-input {
+           padding: 10px;
+           border: 1px solid #007bff;
+           border-radius: 5px;
+           font-size: 16px;
+           flex-grow: 1;
+         }
+       </style>
+     
+ </head>
+
+ <body class="d-flex flex-column min-vh-100">
+   
+ {% include 'nav2.html' %}
+     
+      <div class="container" style="max-width: 820px; margin: 0 auto;">
+          
+          <!--
+        <div class="content-container">
+             <div id="chat-container" class="container">
+                   <div id="chat-messages" class="mb-3"></div>
+
+                   <div class="input-group">
+                     <input
+                       type="text"
+                       id="user-input"
+                       class="form-control"
+                       placeholder="Get a summary of your students' mentorship needs..."
+                     />
+                     <button id="send-button" onclick="sendMessage()" class="btn btn-primary">Send</button>
+                   </div>
+
+             </div>
+         </div>
+     -->
+
+      <h3 class="mt-5 pb-3 border-bottom" style="text-align: center; color: #007bff; font-weight: bold;">Mentorship Requests</h3>
+           
+        {% if requests %}
+            <ul class="list-group">
+                {% for request in requests %}
+                    <li class="list-group-item">
+                        <strong style="text-align: center; color: #007bff; font-weight: bold;">Request:</strong> {{ request.request_text }}<br>
+                        <strong style="text-align: center; color: #007bff; font-weight: bold;">Date:</strong> {{ request.request_date }}<br>
+                        <strong style="text-align: center; color: #007bff; font-weight: bold;">Name:</strong> {{ request.first_name }} {{ request.last_name }}</strong><br>
+                        <strong style="text-align: center; color: #007bff; font-weight: bold;">Email:</strong> {{ request.email }}<br>
+              <button class="btn {% if request.status == 'reviewed' %}btn-success{% else %}btn-primary{% endif %} my-2 status-toggle" 
+                      data-request-id="{{ request.id }}" 
+                      data-status="{{ request.status }}">
+                  {{ request.status.capitalize() }}
+              </button>
+
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <ul class="list-group">
+                <li class="list-group-item">There are no student requests at your school yet. Encourage your students to seek mentorship through Career Guide and start their journey!</li>
+            </ul>
+        {% endif %}
+
+
+        </div>
+
+
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+   <script>
+   $(document).ready(function() {
+       $('.status-toggle').on('click', function() {
+           var button = $(this);
+           var requestId = button.data('request-id');
+           var currentStatus = button.data('status');
+           var newStatus = currentStatus === 'pending' ? 'reviewed' : 'pending';
+
+           $.ajax({
+               url: '/update_request_status',
+               method: 'POST',
+               data: JSON.stringify({
+                   request_id: requestId,
+                   new_status: newStatus
+               }),
+               contentType: 'application/json',
+               success: function(response) {
+                   if (response.success) {
+                       button.text(newStatus.charAt(0).toUpperCase() + newStatus.slice(1));
+                       button.removeClass('btn-primary btn-success');
+                       button.addClass(newStatus === 'reviewed' ? 'btn-success' : 'btn-primary');
+                       button.data('status', newStatus);
+                   } else {
+                       alert('Failed to update status');
+                   }
+               },
+               error: function() {
+                   alert('An error occurred while updating the status');
+               }
+           });
+       });
+   });
+   </script>
+
+     
+<!--
+     <script>
+     function sendMessage() {
+         var userInput = document.getElementById('user-input').value;
+         if (userInput.trim() === '') return;
+
+         // Display user message
+         var chatMessages = document.getElementById('chat-messages');
+         chatMessages.innerHTML += '<p class="user-message">' + userInput + '</p>';
+
+         // Clear input field
+         document.getElementById('user-input').value = '';
+
+         // Send request to server
+         fetch('/admin_chat', {
+             method: 'POST',
+             headers: {
+                 'Content-Type': 'application/json',
+             },
+             body: JSON.stringify({question: userInput}),
+         })
+         .then(response => response.json())
+         .then(data => {
+             // Display AI response
+             chatMessages.innerHTML += '<p class="ai-message">' + data.answer + '</p>';
+             chatMessages.scrollTop = chatMessages.scrollHeight;
+         })
+         .catch((error) => {
+             console.error('Error:', error);
+         });
+     }
+
+     // Allow sending message with Enter key
+     document.getElementById('user-input').addEventListener('keypress', function (e) {
+         if (e.key === 'Enter') {
+             sendMessage();
+         }
+     });
+     </script>
+-->
+
+   
+
+ <div class="footer-spacing">
+ {% include 'footer.html' %}
+ </div>
+   
+ </body>
+ </html>

@@ -1,17 +1,20 @@
 <nav class="navbar bg-body-tertiary">
         <div class="container-fluid">
-          <a class="navbar-brand" href="/" style="color:#007bff"><strong>Career Guide</strong> {% include 'icon.html' %}</a>
+          
+          <div class="navbar-brand" style="color:#007bff">
+          <strong>Career Guide</strong> {% include 'icon.html' %}
+          </div>
 
      
             <div class="dropdown">
               <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Log In Options
+                Log In/Sign Up
               </button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" role="menu">
-                <a class="dropdown-item" href="/adminSignUp" role="menuitem">Admin Sign Up</a>
-                <a class="dropdown-item" href="/adminLogin" role="menuitem">Admin Log In</a>
-                <a class="dropdown-item" href="/studentSignUp" role="menuitem">Student Sign Up</a>
-                <a class="dropdown-item" href="/" role="menuitem">Student Login</a>
+                <a class="dropdown-item" style="color: #007bff;"  href="/adminSignUp" role="menuitem">Admin Sign Up</a>
+                <a class="dropdown-item" style="color: #007bff;"  href="/adminLogin" role="menuitem">Admin Log In</a>
+                <a class="dropdown-item" style="color: #007bff;"  href="/studentSignUp" role="menuitem">Student Sign Up</a>
+                <a class="dropdown-item" style="color: #007bff;"  href="/" role="menuitem">Student Login</a>
               </div>
             </div>
         </div>

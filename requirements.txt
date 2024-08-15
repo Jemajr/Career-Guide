@@ -1,3 +1,8 @@
-Flask
+flask
 gunicorn
-pymysql
+sqlalchemy
+chroma
+langchain
+langchain_community
+langchain_openai
+pymupdf
