@@ -32,11 +32,11 @@ def nocache(view):
 
 
 # Database configuration
-user = "postgres.beatuwbshkuodwcvdhfq"
-host = "aws-0-us-west-1.pooler.supabase.com"
-password = "My!Careers_21"
-database = "postgres"
-port = "6543"
+user = os.environ['USER']
+host = os.environ['HOST']
+password = os.environ['PASSWORD']
+database = 'postgres'
+port = os.environ['PORT']
 
 connection_string = f"postgresql+psycopg2://{user}:{password}@{host}:{port}/{database}"
 
