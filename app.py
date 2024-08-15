@@ -12,7 +12,6 @@ from langchain_community.vectorstores import Chroma
 import os
 import tempfile
 
-
 app = Flask(__name__)
 app.secret_key = 'your_unique_secret_key'
 
@@ -35,11 +34,10 @@ def nocache(view):
 user = os.environ['USER']
 host = os.environ['HOST']
 password = os.environ['PASSWORD']
-database = 'postgres'
+database = os.environ['DATABASE']
 port = os.environ['PORT']
 
 connection_string = f"postgresql+psycopg2://{user}:{password}@{host}:{port}/{database}"
-
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -61,7 +59,7 @@ def student_login():
 
             global student
             student = account['id']
-            
+
             session['id'] = account['id']
             session['username'] = account['first_name']
             return redirect(url_for('student_home'))
@@ -81,7 +79,7 @@ def student_signUp():
         password = request.form['password']
 
         _hashed_password = generate_password_hash(password)
-        
+
         engine = create_engine(connection_string)
         with engine.connect() as connection:
             result = connection.execute(
@@ -106,9 +104,8 @@ def student_signUp():
                     connection.execute(insert_statement)
                     connection.commit()
                     return render_template('studentLogin.html')
-                    
-    return render_template('studentSignUp.html')
 
+    return render_template('studentSignUp.html')
 
 
 @app.route('/adminLogin', methods=['GET', 'POST'])
@@ -135,7 +132,7 @@ def admin_login():
             return redirect(url_for('admin_home'))
         else:
             flash('Incorrect email/password')
-        
+
     return render_template('adminLogin.html')
 
 
@@ -184,10 +181,11 @@ def student_home():
 @nocache
 def admin_home():
 
-    query = text("SELECT r.id, r.request_text, r.request_date, r.status, s.first_name, s.last_name, s.email "
-         "FROM requests r "
-         "JOIN students s ON r.student_id = s.id "
-         "WHERE s.school = :school").bindparams(school=admin_school)
+    query = text(
+        "SELECT r.id, r.request_text, r.request_date, r.status, s.first_name, s.last_name, s.email "
+        "FROM requests r "
+        "JOIN students s ON r.student_id = s.id "
+        "WHERE s.school = :school").bindparams(school=admin_school)
 
     engine = create_engine(connection_string)
     with engine.connect() as connection:
@@ -205,7 +203,9 @@ def mentor():
         query = text("SELECT * FROM requests WHERE student_id = :student_id")
         engine = create_engine(connection_string)
         with engine.connect() as connection:
-            results = connection.execute(query, {'student_id': student_id}).fetchall()
+            results = connection.execute(query, {
+                'student_id': student_id
+            }).fetchall()
 
         formatted_results = []
         for result in results:
@@ -220,7 +220,6 @@ def mentor():
 
         return render_template('mentor.html', requests=formatted_results)
 
-
     if request.method == 'POST':
         try:
             request_text = request.form['student_request']
@@ -228,29 +227,28 @@ def mentor():
             #print(f"Request Text: {request_text}, Student ID: {student_id}")
 
             request_query = text(
-                "INSERT INTO requests (student_id, request_text) " 
-                "VALUES (:student_id, :request_text)"
-            ).bindparams(student_id=student_id,
-                         request_text=request_text)
+                "INSERT INTO requests (student_id, request_text) "
+                "VALUES (:student_id, :request_text)").bindparams(
+                    student_id=student_id, request_text=request_text)
 
-            
             engine = create_engine(connection_string)
             # Execute the query
             with engine.connect() as connection:
                 connection.execute(request_query)
                 connection.commit()
 
-            query = text("SELECT * FROM requests WHERE student_id = :student_id")
+            query = text(
+                "SELECT * FROM requests WHERE student_id = :student_id")
             with engine.connect() as connection:
-                result = connection.execute(query, {'student_id': student_id}).fetchall()
-                
+                result = connection.execute(query, {
+                    'student_id': student_id
+                }).fetchall()
+
             return render_template('mentor.html', requests=result), 200
 
         except Exception as e:
             print(f"Error: {e}")
             return jsonify({'error': 'Failed to save request.'}), 500
-
-
 
 
 @app.route('/update_request_status', methods=['POST'])
@@ -268,15 +266,19 @@ def update_request_status():
             update_query = text(
                 "UPDATE requests SET status = :new_status WHERE id = :request_id"
             )
-            connection.execute(update_query, {'new_status': new_status, 'request_id': request_id})
+            connection.execute(update_query, {
+                'new_status': new_status,
+                'request_id': request_id
+            })
             connection.commit()
 
         # Fetch the updated status from the database to confirm the change
         with engine.connect() as connection:
             select_query = text(
-                "SELECT status FROM requests WHERE id = :request_id"
-            )
-            result = connection.execute(select_query, {'request_id': request_id}).fetchone()
+                "SELECT status FROM requests WHERE id = :request_id")
+            result = connection.execute(select_query, {
+                'request_id': request_id
+            }).fetchone()
             updated_status = result[0] if result else None
 
         return jsonify({'success': True, 'updated_status': updated_status})
@@ -284,12 +286,6 @@ def update_request_status():
         print(f"Error updating request status: {str(e)}")
         return jsonify({'success': False, 'error': 'Database error'}), 500
 
-
-
-        
-    
-
-    
 
 # Initialize the language model
 llm = ChatOpenAI(name="gpt-4o-mini", temperature=1.0)
@@ -313,7 +309,6 @@ Student Question: {question}
 
 Response:
 """
-
 
 QA_CHAIN_PROMPT = PromptTemplate.from_template(template)
 
@@ -372,12 +367,6 @@ def ask():
     return jsonify({'answer': answer})
 
 
-
-
-
-
-
-
 '''# Initialize components for admin chat
 admin_llm = ChatOpenAI(name="gpt-4o-mini", temperature=0.7)
 admin_memory = ConversationBufferMemory(return_messages=True)
@@ -433,10 +422,6 @@ def admin_chat():
     return jsonify({'answer': response})
 
 '''
-
-
-
-
 
 
 @app.route('/logout')
