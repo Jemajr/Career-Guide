@@ -1,4 +1,4 @@
-run = "python try.py"
+run = "python app.py"
 modules = ["python-3.10"]
 [nix]
 channel = "stable-24_05"
