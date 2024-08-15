@@ -1,2 +1,2 @@
 # Career Guide
-Project to help HBCU Career Centers Serve Better
+A Project to improve the Operational Efficiency of HBCU Career Centers
