@@ -36,10 +36,4 @@
 - **API**:
   - **OpenAI API**: For powering the AI chatbot used in resume reviews.
 
-## Installation
 
-1. **Clone the Repository**:
-
-   ```bash
-   git clone https://github.com/your-username/career-guide.git
-   cd career-guide
