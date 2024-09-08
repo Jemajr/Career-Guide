@@ -4,6 +4,8 @@
 
 **Career Guide** is a web application designed to enhance the operational efficiency of career centers at Historically Black Colleges and Universities (HBCUs). This platform aims to streamline the process of resume reviews and mentorship requests for students while allowing career centers to focus on other essential tasks.
 
+![Demo 1](https://github.com/Jemajr/Career-Guide/blob/main/images/demo1.gif "Demo 1")
+
 ## Features
 
 - **Student Login/Signup**: Students can create an account or log in to access personalized career services.
